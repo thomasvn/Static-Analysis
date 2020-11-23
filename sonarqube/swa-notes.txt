@@ -1,0 +1,23 @@
+--------------------------------------------------------------------------------
+CAPABILITIES
+--------------------------------------------------------------------------------
+https://docs.sonarqube.org/latest/user-guide/security-rules/
+- Rules to identify:
+    - Bugs
+    - Vulns (based on SonarSource, OWASP Top 10, SANS Top 25, CWEs)
+    - Security Hotspots
+    - CodeSmell (tech debt)
+
+https://rules.sonarsource.com
+- Examples of security related rules:
+    - security-injection rules (sql injection, cross-site scripting, code injection)
+        - taint analysis techniques
+    - security-config rules (sensitive cookie, validating certs, risky crypto)
+
+
+--------------------------------------------------------------------------------
+SHORTCOMINGS
+--------------------------------------------------------------------------------
+- seems like primarily a code quality tool with static analysis bolted on
+- review of code is required, not an extremely easy integration into a ci/cd pipeline
+

@@ -1,0 +1,39 @@
+--------------------------------------------------------------------------------
+TASKS
+--------------------------------------------------------------------------------
+TODO:
+- get this working in a docker-compose format
+- integrate this into a CI/CD pipeline
+    - there seems to be a lot of manual work associated with scans
+- is this a SAST product or a DAST product?
+
+COMPLETED:
+- run a single instance of sonarqube and sonar-scanner-cli
+- run a scan on source code "youtube-dl"
+
+
+--------------------------------------------------------------------------------
+LINKS
+--------------------------------------------------------------------------------
+https://hub.docker.com/_/sonarqube/
+https://docs.sonarqube.org/latest/setup/get-started-2-minutes/
+https://github.com/SonarSource/sonar-scanning-examples/tree/master/sonarqube-scanner/src
+https://blog.sonarsource.com
+https://www.freecodecamp.org/news/how-to-get-a-docker-container-ip-address-explained-with-examples/
+
+
+--------------------------------------------------------------------------------
+CODE
+--------------------------------------------------------------------------------
+# Setup the server
+docker pull sonarqube
+docker run -d --name sonarqube -e SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true -p 9000:9000 sonarqube:latest
+http://localhost:9000/
+admin admin
+
+# Run the scan using Docker Container
+echo "sonar.projectKey=test-youtube-dl" > /Users/thomasnguyen/Documents/Computer-Science/Sandbox/youtube-dl/sonar-project.properties
+docker inspect sonarqube
+export SONARQUBE_URL=172.17.0.2:9000
+export YOUR_REPO=/Users/thomasnguyen/Documents/Computer-Science/Sandbox/youtube-dl
+docker run --rm -e SONAR_HOST_URL="http://${SONARQUBE_URL}" -v "${YOUR_REPO}:/usr/src" sonarsource/sonar-scanner-cli

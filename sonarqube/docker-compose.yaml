@@ -1,0 +1,17 @@
+# NOT TESTED YET
+version: '3.8'
+services:
+  sonarqube:
+    image: sonarqube
+    container_name: sonarqube
+    ports:
+      - '9000:9000'
+    environment:
+      SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true
+  sonar-scanner:
+    image: sonarsource/sonar-scanner-cli
+    container_name: sonar-scanner
+    environment:
+      SONAR_HOST_URL="http://172.17.0.2:9000"
+    volumes:
+      - ../src/youtube-dl:/usr/src
