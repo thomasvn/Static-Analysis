@@ -1,0 +1,7 @@
+version: '3.8'
+services:
+  openscap:
+    build: ./
+    image: openscap
+    container_name: openscap
+    tty: true
