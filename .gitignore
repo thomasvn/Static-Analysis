@@ -1,5 +1,3 @@
-# Source code that gets scanned
+.vagrant
 src/*
-
-# Policy files
 httpd_2.4x_server
