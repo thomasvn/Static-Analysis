@@ -1,2 +1,5 @@
 # Source code that gets scanned
 src/*
+
+# Policy files
+httpd_2.4x_server
