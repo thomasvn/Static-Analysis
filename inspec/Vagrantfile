@@ -2,7 +2,7 @@
 # vi: set ft=ruby :
 
 Vagrant.configure("2") do |config|
-  config.vm.box = "ubuntu/trusty64"
+  config.vm.box = "ubuntu/focal64"
 
   config.vm.provision "shell", inline: <<-SHELL
     # https://docs.docker.com/engine/install/ubuntu/
