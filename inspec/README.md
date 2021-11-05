@@ -27,7 +27,12 @@ vagrant destroy
 Option 3 (Inspec in a build):
 
 ```bash
-docker build --pull -t httpd-hardened .
+docker build --pull -t httpd-hardened --target test .
+```
+
+Option 4 (Inspec in a sidecar container):
+
+```bash
 
 ```
 
@@ -46,14 +51,19 @@ sudo inspec exec httpd_2.4x_server -t docker://$container_id
 ## References
 
 - <https://github.com/inspec/inspec>
+- <https://gitlab.dsolab.io/scv-content/>
+- <https://hub.docker.com/_/httpd>
 
 <!--
 TODO
 - VM
+  - https://github.com/hashicorp/vagrant/issues/12557
   - review all the Errors that ChefInspec gives
 - Get a container running inspec to execute on another application container ?
   - examine the results for hardened apache?
-- Inspec at build time
+  - get it to work without "/var/run/docker.sock" ? sidecar inspec in pod ?
+- Inspec at build time (Dockerfile)
+- Inspec at run time (sidecar)
 - Reach out to DISA to see if there is more work being done on these Inspec Profiles?
 
 DEBUG
