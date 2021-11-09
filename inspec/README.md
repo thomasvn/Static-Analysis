@@ -2,7 +2,7 @@
 
 ## Download
 
-Option 1 (Inspec in a container):
+**Option 1 (Inspec in a container):**
 
 ```bash
 docker pull chef/inspec
@@ -12,7 +12,7 @@ docker pull chef/inspec
 function inspec { docker run -it --rm -v $(pwd):/share -v /var/run/docker.sock:/var/run/docker.sock chef/inspec "$@"; }
 ```
 
-Option 2 (Inspec on the VM):
+**Option 2 (Inspec in a VM):**
 
 ```bash
 # Set up a linux VM; download Docker; download ChefInspec
@@ -24,16 +24,17 @@ vagrant halt
 vagrant destroy
 ```
 
-Option 3 (Inspec in a build):
+**Option 3 (Inspec in a build):**
 
 ```bash
+# Build the container image, and make sure that the "test" stage is run.
 docker build --pull -t httpd-hardened --target test .
 ```
 
-Option 4 (Inspec in a sidecar container):
+**Option 4 (Inspec in a sidecar container):**
 
 ```bash
-
+docker-compose up
 ```
 
 ## Check STIG controls for Apache 2.4
@@ -61,9 +62,10 @@ TODO
   - review all the Errors that ChefInspec gives
 - Get a container running inspec to execute on another application container ?
   - examine the results for hardened apache?
-  - get it to work without "/var/run/docker.sock" ? sidecar inspec in pod ?
-- Inspec at build time (Dockerfile)
 - Inspec at run time (sidecar)
+  - exec into the sidecar and manually scan the other container
+  - set up cronjob to scan containers in same network
+  - https://docs.docker.com/compose/compose-file/compose-file-v3/
 - Reach out to DISA to see if there is more work being done on these Inspec Profiles?
 
 DEBUG

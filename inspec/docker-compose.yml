@@ -1,0 +1,12 @@
+version: "3.9"
+services:
+
+  httpd:
+    image: httpd:2.4.51
+    ports:
+      - "8080:80"
+    
+  inspec-sidecar:
+    build:
+      context: .
+      dockerfile: Dockerfile-Inspec
