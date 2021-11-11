@@ -5,8 +5,17 @@ services:
     image: httpd:2.4.51
     ports:
       - "8080:80"
-    
+    volumes:
+      - "filesystem:/usr/local/apache2"
+
   inspec-sidecar:
+    depends_on:
+      - httpd
     build:
       context: .
       dockerfile: Dockerfile-Inspec
+    volumes:
+      - "filesystem:/httpd"
+
+volumes:
+  filesystem:
