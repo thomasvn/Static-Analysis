@@ -49,12 +49,10 @@ docker build --pull -t httpd-hardened --target test .
 ```bash
 # start up containers
 docker-compose up -d
-docker-compose exec inspec-sidecar
 
-# Run Inspec
-echo "config_path: /httpd/conf/httpd.conf" >> input.yml
-inspec exec httpd_2.4x_server --input config_path=/httpd/conf/httpd.conf /httpd
-inspec exec httpd_2.4x_server --input-file input.yml /httpd
+# Manually Run Inspec
+docker-compose exec inspec-sidecar
+inspec exec httpd_2.4x_server -t docker://$container_id
 
 # destroy containers, networks, volumes
 docker-compose down
@@ -75,11 +73,10 @@ TODO
 - Get a container running inspec to execute on another application container ?
   - examine the results for hardened apache?
 - Inspec Sidecar
-  - let sidecar see all files from app container
-    - https://www.magalix.com/blog/the-sidecar-pattern
   - exec into the sidecar and manually scan the other container
-  - https://zwischenzugs.com/2015/06/24/the-most-pointless-docker-command-ever/
+    - get it to work using ALIAS instead of ID?
   - set up cronjob to scan containers in same network
+  - https://zwischenzugs.com/2015/06/24/the-most-pointless-docker-command-ever/
   - https://docs.docker.com/compose/compose-file/compose-file-v3/
 - Reach out to DISA to see if there is more work being done on these Inspec Profiles?
 
