@@ -6,7 +6,7 @@ A [package manager](https://en.wikipedia.org/wiki/Package_manager) for macOS. If
 
 ## Understanding the beer analogy
 
-Ok, I've worked with a package manager before, but what are all these weird terms like "formula", "keg", "rack", "tap"? It'll make much more sense to you if you understand beer culture. Here's a *brief* introduction:
+Ok, I've worked with a package manager before, but what are all these weird terms like "formula", "keg", "rack", "tap"? It'll make much more sense to you if you understand beer culture. Here's a *brief* and *oversimplified* introduction:
 
 ![Beer Overview](homebrew-1.png)
 
@@ -17,11 +17,13 @@ Ok, I've worked with a package manager before, but what are all these weird term
 
 ## Tying it back to package managers
 
-Homebrew's creator @mxcl apparently loved beer culture. So much so that he built a beer-themed package manager.
-
 ![Homebrew Overview](homebrew-2.png)
 
-## Creating your own formula!
+- All official Homebrew formulas are hosted in [this Github repository](https://github.com/Homebrew/homebrew-core)
+- The default location a package is installed to is `/usr/local/Cellar`. The package executables are then sym-linked into `/usr/local/bin`
+- Additional Homebrew concepts (e.g. Casks, Taps) found [here](https://docs.brew.sh/Formula-Cookbook).
+
+## Example
 
 Setup:
 
@@ -39,19 +41,35 @@ $ /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/
 /usr/local/sbin
 ==> The Xcode Command Line Tools will be installed.
 
-# Uninstall Homebrew
-$ /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/uninstall.sh)"
+# Install a package
+$ brew install jq
+
+# Show jq executable sym-linked into Cellar
+$ ls -l /usr/local/bin
+lrwxr-xr-x  1 thomasnguyen  admin        23 Feb 12 21:32 jq -> ../Cellar/jq/1.6/bin/jq
 ```
+
+A few interesting things to notice:
+
+- everything is installed under `/usr/local`
+- all executables installed by Homebrew are under `/usr/local/Cellar` and `/usr/local/Caskroom`
+- these executables are sym-linked into `/usr/local/bin` so that they can be immediately called from your command line.
+
+## Creating our own formula
 
 ## References
 
 - <https://brew.sh/>
+- <https://github.com/Homebrew>
+- <https://docs.brew.sh/Formula-Cookbook>
 
 <!-- 
 TODO:
-- Other ideas (1) tap, (2) cask / caskroom
-- `ls -la /usr/local/bin`
-- create our own package?
-  - `brew edit`
+- create our own formula?
   - `brew create URL` && `brew install <formula>`
+  - `brew edit`
+  - openshift command line tool
+  - openscap?
+  - https://github.com/openshift/okd/releases
+- Other ideas (1) tap, (2) cask / caskroom
 -->
