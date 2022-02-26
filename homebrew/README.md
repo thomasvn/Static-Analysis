@@ -1,4 +1,4 @@
-# Notes on Homebrew
+# 📦 Unnpacking Homebrew
 
 ## What is Homebrew?
 
@@ -19,13 +19,11 @@ Ok, I've worked with a package manager before, but what are all these weird term
 
 ![Homebrew Overview](homebrew-2.png)
 
-- All official Homebrew formulas are hosted in [this Github repository](https://github.com/Homebrew/homebrew-core)
-- The default location a package is installed to is `/usr/local/Cellar`. The package executables are then sym-linked into `/usr/local/bin`
+- All official Homebrew formulas are hosted in [this Github repository](https://github.com/Homebrew/homebrew-core). When you install a package, you're simply running one of these Ruby scripts.
+- The default location a package is installed to is `/usr/local/Cellar`. The package's executable is then sym-linked into `/usr/local/bin`
 - Additional Homebrew concepts (e.g. Casks, Taps) found [here](https://docs.brew.sh/Formula-Cookbook).
 
-## Example
-
-Setup:
+## Getting started with Homebrew
 
 ```bash
 # Install Homebrew
@@ -46,30 +44,76 @@ $ brew install jq
 
 # Show jq executable sym-linked into Cellar
 $ ls -l /usr/local/bin
-lrwxr-xr-x  1 thomasnguyen  admin        23 Feb 12 21:32 jq -> ../Cellar/jq/1.6/bin/jq
+lrwxr-xr-x  1 thomasnguyen  admin         jq -> ../Cellar/jq/1.6/bin/jq
 ```
 
 A few interesting things to notice:
 
-- everything is installed under `/usr/local`
+- everything Homebrew-related is installed under `/usr/local`
 - all executables installed by Homebrew are under `/usr/local/Cellar` and `/usr/local/Caskroom`
 - these executables are sym-linked into `/usr/local/bin` so that they can be immediately called from your command line.
 
 ## Creating our own formula
+
+As we've now learned, `brew install` is simply Homebrew executing a formula (ruby script) which defines how to install the package.
+
+Let's try writing our own formula!
+
+1. Identify the `.tar.gz` executable you want to be able to install using `brew`. I've decided to create a formula for `wget` (<https://www.gnu.org/software/wget/>)
+
+2. Use `brew create` to generate a ruby script
+
+    ```bash
+    brew create --set-name my-wget https://ftp.gnu.org/gnu/wget/wget-1.15.tar.gz
+    ```
+
+3. Modify the Ruby script to include instructions on how to install
+
+    ```ruby
+    class MyWget < Formula
+      homepage "https://www.gnu.org/software/wget/"
+      url "https://ftp.gnu.org/gnu/wget/wget-1.15.tar.gz"
+      sha256 "52126be8cf1bddd7536886e74c053ad7d0ed2aa89b4b630f76785bac21695fcd"
+
+      depends_on "gnutls"
+
+      def install
+        system "./configure", "--prefix=#{prefix}"
+        system "make", "install"
+      end
+    end
+    ```
+
+4. Run `brew install` on the formula we just created. Notice all the dependencies that need to be installed for `my-wget` and `gnutls`
+
+    ```bash
+    brew install --build-from-source my-wget
+    ```
+
+5. Test and check. Notice that even though our formula is called `my-wget`, the executable we installed from gnu is still called `wget`.
+
+    ```bash
+    $ ls /usr/local/Cellar/my-wget/1.15/bin
+    wget
+
+    $ ls -l /usr/local/bin/wget
+    lrwxr-xr-x  1 thomasnguyen  admin  /usr/local/bin/wget -> ../Cellar/my-wget/1.15/bin/wget
+
+    $ wget google.com
+    ```
+
+## Other tidbits
+
+- you can use `brew edit` to locally change an existing formula
 
 ## References
 
 - <https://brew.sh/>
 - <https://github.com/Homebrew>
 - <https://docs.brew.sh/Formula-Cookbook>
+- <https://rubydoc.brew.sh/Formula>
 
 <!-- 
 TODO:
-- create our own formula?
-  - `brew create URL` && `brew install <formula>`
-  - `brew edit`
-  - openshift command line tool
-  - openscap?
-  - https://github.com/openshift/okd/releases
-- Other ideas (1) tap, (2) cask / caskroom
+- `rm /usr/local/etc/wgetrc`??
 -->
