@@ -50,6 +50,7 @@ openssl dgst -sha256 -sign cosign.key -out httpd.sig httpd.payload
 ## References
 
 - <https://github.com/sigstore/cosign>
+  - <https://github.com/sigstore/cosign/blob/main/USAGE.md>
 - VirtualBox Issues
   - <https://github.com/hashicorp/vagrant/issues/8687>
   - <https://apple.stackexchange.com/questions/429609/running-vagrant-via-vagrant-up-on-macos-monterey-12-0-1-fails>
