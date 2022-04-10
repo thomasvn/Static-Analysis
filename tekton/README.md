@@ -36,10 +36,43 @@ kubectl delete deployment hello-node
 Install following these instructions: <https://tekton.dev/docs/pipelines/install/>
 
 ```bash
+# Core Tekton components
 kubectl apply --filename https://storage.googleapis.com/tekton-releases/pipeline/latest/release.yaml
+kubectl create configmap config-artifact-pvc \
+    --from-literal=size=5Gi \
+    --from-literal=storageClassName=hostpath \
+    -o yaml -n tekton-pipelines \
+    --dry-run=client | kubectl replace -f -
+
+# CLI
+brew install tektoncd-cli
 ```
 
-"Hello World" following these instructions: <https://github.com/tektoncd/pipeline/blob/release-v0.33.x/docs/tutorial.md>
+["Hello World" for Tasks](https://tekton.dev/docs/getting-started/):
+
+```bash
+# Each STEP is executed with a container
+# Steps are organized into TASKS within a pod
+# Tasks are organized into PIPELINES
+kubectl apply -f task-hello.yaml
+
+# TASKRUN specifies runtime options for tasks
+tkn task start hello --dry-run
+tkn task start hello --dry-run > taskRun-hello.yaml
+kubectl create -f taskRun-hello.yaml
+```
+
+["Hello World" for Pipelines](https://tekton.dev/docs/getting-started/pipelines/):
+
+```bash
+# Create a Pipeline resource with two Task resources
+kubectl apply -f task-goodbye.yaml
+kubectl apply -f pipeline-hello-goodbye.yaml
+
+# Create a PipelineRun resource
+tkn pipeline start hello-goodbye --dry-run > pipelineRun-hello-goodbye.yaml
+kubectl create -f pipelineRun-hello-goodbye.yaml
+```
 
 ## References
 
@@ -49,6 +82,6 @@ kubectl apply --filename https://storage.googleapis.com/tekton-releases/pipeline
 
 <!--
 TODO:
-- try a hello world on this cluster
 - try installing operators?
+- <https://github.com/tektoncd/pipeline/blob/release-v0.33.x/docs/tutorial.md>
 -->
