@@ -1,5 +1,10 @@
+# Environment
+.vscode
 .vagrant
 src/*
 httpd_2.4x_server
 .DS_Store
 install.yaml
+
+# Misc
+tilt-avatars
